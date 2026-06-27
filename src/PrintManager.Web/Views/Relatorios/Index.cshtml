@@ -1,0 +1,82 @@
+@model RelatorioMensalDto
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Relatório Mensal";
+    var filtro = ViewBag.Filtro as RelatorioFiltroViewModel ?? new RelatorioFiltroViewModel();
+    var meses = new[] { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
+}
+
+<form method="get" class="row g-3 mb-4">
+    <div class="col-md-3">
+        <label class="form-label">Mês</label>
+        <select name="Mes" class="form-select">
+            @for (var i = 1; i <= 12; i++)
+            {
+                if (filtro.Mes == i)
+                {
+                    <option value="@i" selected>@meses[i - 1]</option>
+                }
+                else
+                {
+                    <option value="@i">@meses[i - 1]</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Ano</label>
+        <input type="number" name="Ano" class="form-control" value="@filtro.Ano" min="2020" max="2100" />
+    </div>
+    <div class="col-md-3 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary">Gerar Relatório</button>
+    </div>
+</form>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Pedidos Concluídos</h6>
+                <h3 class="mb-0">@Model.QuantidadePedidosConcluidos</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Valor Total Recebido</h6>
+                <h3 class="mb-0">@Model.ValorTotalRecebido.ToString("C")</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Cliente</th>
+                <th>Valor Pago</th>
+                <th>Data Finalização</th>
+                <th>Quantidade</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Itens.Any())
+            {
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-4">Nenhum pedido finalizado neste período.</td>
+                </tr>
+            }
+            @foreach (var item in Model.Itens)
+            {
+                <tr>
+                    <td>@item.NomeCliente</td>
+                    <td>@(item.ValorPago?.ToString("C") ?? "-")</td>
+                    <td>@(item.DataFinalizacao?.ToLocalTime().ToString("dd/MM/yyyy HH:mm") ?? "-")</td>
+                    <td>@item.Quantidade</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

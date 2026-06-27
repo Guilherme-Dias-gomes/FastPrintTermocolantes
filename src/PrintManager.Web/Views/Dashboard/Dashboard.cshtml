@@ -1,0 +1,40 @@
+@model DashboardDto
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="row g-4">
+    <div class="col-md-3">
+        <div class="card border-warning shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Aguardando</h6>
+                <h2 class="mb-0">@Model.PedidosAguardando</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-info shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Em Impressão</h6>
+                <h2 class="mb-0">@Model.PedidosEmImpressao</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-success shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Finalizados</h6>
+                <h2 class="mb-0">@Model.PedidosFinalizados</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-primary shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Total de Pedidos</h6>
+                <h2 class="mb-0">@Model.TotalPedidos</h2>
+            </div>
+        </div>
+    </div>
+</div>
